@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cmd_manager.c                                      :+:      :+:    :+:   */
+/*   input_manager.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 20:43:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/08 22:39:19 by wta              ###   ########.fr       */
+/*   Created: 2019/01/08 20:20:05 by wta               #+#    #+#             */
+/*   Updated: 2019/01/09 03:57:45 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/includes/libft.h"
 #include "minishell.h"
 
-void	cmd_manager(char *cmd)
+void		input_manager(char *input, t_lst *env)
 {
-	char	**split;
+	char	**cmds;
+	int		ret;
+	int		idx;
 
-	if ((split = ft_strsplit(cmd, ' ')) != NULL)
+	cmds = NULL;
+	if (input != NULL)
 	{
-		
+		ret = split_by_token(input, &cmds, ';');
+		ft_strdel(&input);
+		idx = -1;
+		while (++idx < ret)
+			cmd_manager(cmds[idx], env);
+		ft_splitdel(cmds);
 	}
 }

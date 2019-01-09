@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/01/08 19:35:48 by wta              ###   ########.fr        #
+#    Updated: 2019/01/09 03:04:29 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #=======================================================================  COLOR#
@@ -26,8 +26,15 @@ OBJ			=	$(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 CC			=	gcc
 INC			=	-I $(INCDIR) -I .
 CFLAGS		=	-Wall -Wextra -Werror
-SRCS		=															\
+SRCS		=	\
+cmd_manager.c	\
+input_manager.c	\
+manager_utils.c	\
+get_input.c		\
+linked_list.c	\
+main.c
 HEADER		=																\
+minishell.h	
 #======================================================================# RULES #
 all : $(NAME)
 #=======================================================================# NAME #

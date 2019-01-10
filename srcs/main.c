@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:42:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/09 04:20:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 06:17:42 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,39 +14,53 @@
 #include "../libft/includes/ft_printf.h"
 #include "minishell.h"
 
-static void	init_minishell(int ac, char **av, char **env, t_lst *envcpy)
+void	print_env(char **env)
 {
-	t_env	*node;
-	int		size;
-	int		i;
+	int	idx;
+
+	if (env !=  NULL)
+	{
+		idx = -1;
+		while (env[++idx] != NULL)
+			ft_printf("%s\n", env[idx]);
+	}
+}
+
+void	init_shell(int ac, char **av, char ***env)
+{
+	char	**new_env;
+	int		idx;
+	int		len;
 
 	(void)ac;
 	(void)av;
-	if ((size = split_counter(env)) > 0)
+	len = split_counter(*env);
+	ft_printf("%d\n", len);
+	if ((new_env = (char**)ft_memalloc(sizeof(char*) * (len + 1))) != NULL)
 	{
-		i = -1;
-		while (++i < size)
+		idx = -1;
+		while (++idx < len)
 		{
-			if ((node = newnode(env[i])) != NULL)
-				pushback(envcpy, node);
-			else
-				return ; // TODO rm all lst
+			if ((new_env[idx] = ft_strdup((*env)[idx])) == NULL)
+				exit(0);
 		}
+		*env = new_env;
+		return ;
 	}
+	exit(0);
 }
 
 int	main(int ac, char **av, char **env)
 {
-	t_lst	envcpy;
 	char	*input;
 
-	init_lst(&envcpy);
-	init_minishell(ac, av, env, &envcpy);
+	init_shell(ac, av, &env);
+	signal(SIGINT, signal_handler);
 	input = NULL;
 	while (1)
 	{
 		if (get_next_line(0, &input) > 0)
-			input_manager(input, &envcpy);
+			input_manager(input, env);
 	}
 	return (0);
 }

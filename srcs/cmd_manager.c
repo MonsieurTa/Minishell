@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 20:43:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/09 07:08:22 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 06:03:30 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,144 +17,89 @@
 #include "../libft/includes/ft_printf.h"
 #include "minishell.h"
 
-void	err_handler(int err_id, char *path)
+void	exec_builtin(char **builtin, int id, char **env)
 {
-	(void)err_id;
-	(void)path;
+	int	ac;
+	int	err_id;
+
+	ac = split_counter(builtin);
+	err_id = 0;
+	if (id == 1)
+		err_id = echo_builtin(ac, builtin, env);
+	if (id == 3 && split_counter(builtin) == 3)
+		err_id = setenv_builtin(builtin[1], builtin[2], env);
+	else if (id == 3 && split_counter(builtin) != 3)
+		err_id = SETENV_USAGE;
+	/*
+	if (id == 2)
+		err_id = cd_builtin(ac, builtin);
+	if (id == 4)
+		err_id = unsetenv_builtin(ac, builtin);
+	if (id == 5)
+		err_id = env_builtin(ac, builtin);
+	if (id == 6)
+		err_id = clear_builtin(ac, builtin);*/
+	if (err_id != 0)
+		err_handler(err_id, builtin[0]);
+//	print_env(env);
 }
 
-int		find_bin(char *bin, t_lst *env)
-{
-	(void)bin;
-	(void)env;
-	return (1);
-}
-
-char	**get_env(t_lst *env)
-{
-	t_env	*node;
-	char	**envcpy;
-	int		idx;
-
-	if ((envcpy = (char**)ft_memalloc((sizeof(char*) * env->len))) != NULL)
-	{
-		node = env->head;
-		idx = -1;
-		while (node != NULL && ++idx < env->len)
-		{
-			if ((envcpy[idx] = ft_strdup(node->str)) == NULL)
-			{
-				ft_splitdel(envcpy);
-				return (NULL);
-			}
-			node = node->next;
-		}
-	}
-	return (envcpy);
-}
-
-int		check_path(char *path, int slash, t_lst *env)
+int		exec_binpath(char **bin, char **env)
 {
 	struct stat	buf;
+	pid_t		pid;
 
-	if (slash > 0)
-	{
-		if (lstat(path, &buf) == -1)
-			return (1);
-		else
-		{
-			if (S_ISREG(buf.st_mode) == 1 && access(path, R_OK | X_OK) == 0)
-				return (2);
-			if (S_ISDIR(buf.st_mode) == 1 && access(path, R_OK | X_OK) == 0)
-				return (3);
-		}
-		return (0);
-	}
-	return (find_bin(path, env));
-}
-
-int		check_err(char *path, t_lst *env)
-{
-	char	pathcpy[MAX_PATH_LEN];
-	int		slash;
-	int		idx;
-	int		ret;
-
-	ft_bzero((void*)pathcpy, MAX_PATH_LEN);
-	ft_strcpy(pathcpy, path);
-	idx = -1;
-	ret = 0;
-	slash = 0;
-	while (ret == 0 && pathcpy[++idx] != '\0')
-	{
-		if (pathcpy[idx] == '/')
-		{
-			slash += 1;
-			pathcpy[idx + 1] = '\0';
-			ret = check_path(pathcpy, slash, env);
-			pathcpy[idx + 1] = path[idx + 1];
-		}
-	}
-	if (ret != 0 || (ret = check_path(pathcpy, slash, env)) != 0)
-		err_handler(ret, path);
-	return (ret);
-}
-
-void	exec_builtin(char **builtin, int id)
-{
-	(void)builtin;
-	ft_printf("id = %d\n", id);
-	return ;
-}
-
-void	exec_bin(char **bin, t_lst *env)
-{
-	pid_t	pid;
-	char	**envcpy;
-	int		err_id;
-
-	if ((err_id = check_err(bin[0], env)) == 0)
-	{
-		if ((envcpy = get_env(env)) != NULL)
-		{
-			if ((pid = fork()) == 0)
-				execve(bin[0], bin + 1, envcpy);
-		//	else
-		//		return ; // TODO memory handling
-			wait(&pid);
-			ft_splitdel(envcpy);
-		}
-	}
-	else
-		err_handler(err_id, bin[0]);
-	return ;
-}
-
-int		builtin_id(char *str)
-{
-	if (ft_strequ(str, "echo") == 1)
+	if (lstat(bin[0], &buf) == -1)
 		return (1);
-	else if (ft_strequ(str, "cd") == 1)
+	if (S_ISREG(buf.st_mode) == 1 && access(bin[0], X_OK) == 0)
+	{
+		if ((pid = fork()) == 0)
+			execve(bin[0], bin, env);
+		wait(&pid);
+	}
+	else if (S_ISDIR(buf.st_mode) == 1)
 		return (2);
-	else if (ft_strequ(str, "setenv") == 1)
+	else if (access(bin[0], X_OK) != 0)
 		return (3);
-	else if (ft_strequ(str, "unsetenv") == 1)
-		return (4);
-	else if (ft_strequ(str, "env") == 1)
-		return (5);
 	return (0);
 }
 
-void	cmd_manager(char *cmd, t_lst *env)
+int		exec_envpath(char **bin, char **env)
+{
+	char	**env_path;
+	char	*path;
+
+	if ((path = get_env_path(env)) != NULL)
+	{
+		if ((split_by_token(path, &env_path, ':')) > 0)
+		{
+			if (find_bin(env_path, bin, env) == 0)
+				ft_printf("-minishell: %s: command not found\n", bin[0]);
+			ft_splitdel(env_path);
+		}
+	}
+	return (0);
+}
+
+void	exec_bin(char **bin, char **env)
+{
+	int	err_id;
+
+	err_id = (is_path(bin[0])) ? exec_binpath(bin, env) :
+		exec_envpath(bin, env);
+	if (err_id != 0)
+		err_handler(err_id, bin[0]);
+}
+
+void	cmd_manager(char *cmd, char **env)
 {
 	char	**split;
 	int		id;
 
-	(void)env;
 	if (split_by_token(cmd, &split, ' ') > 0)
 	{
 		id = builtin_id(split[0]);
-		(id > 0) ? exec_builtin(split, id) : exec_bin(split, env);
+		(id > 0) ? exec_builtin(split, id, env) : exec_bin(split, env);
 		ft_splitdel(split);
 	}
 }

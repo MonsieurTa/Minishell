@@ -1,34 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_manager.c                                    :+:      :+:    :+:   */
+/*   echo_builtin.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
+/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 20:20:05 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:52:29 by wta              ###   ########.fr       */
+/*   Created: 2019/01/10 02:06:35 by wta               #+#    #+#             */
+/*   Updated: 2019/01/10 04:51:44 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/includes/libft.h"
+#include "../libft/includes/ft_printf.h"
 #include "minishell.h"
 
-#include <stdio.h>
-
-void		input_manager(char *input, char **env)
+int		echo_builtin(int ac, char **av, char **env)
 {
-	char	**cmds;
-	int		ret;
-	int		idx;
+	(void)env;
+	int	idx;
 
-	cmds = NULL;
-	if (input != NULL)
+	if (ac > 1)
 	{
-		ret = split_by_token(input, &cmds, ';');
-		ft_strdel(&input);
-		idx = -1;
-		while (++idx < ret)
-			cmd_manager(cmds[idx], env);
-		ft_splitdel(cmds);
+		idx = 0;
+		while (++idx < ac)
+		{
+			if (idx < ac - 1)
+				ft_printf("%s ", av[idx]);
+			else
+				ft_printf("%s\n", av[idx]);
+		}
 	}
+	else
+		ft_putchar('\n');
+	return (0);
 }

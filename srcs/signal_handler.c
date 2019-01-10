@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_manager.c                                    :+:      :+:    :+:   */
+/*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
+/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 20:20:05 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:52:29 by wta              ###   ########.fr       */
+/*   Created: 2019/01/10 00:06:17 by wta               #+#    #+#             */
+/*   Updated: 2019/01/10 00:14:17 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/includes/libft.h"
 #include "minishell.h"
 
-#include <stdio.h>
-
-void		input_manager(char *input, char **env)
+void	signal_handler(int sig)
 {
-	char	**cmds;
-	int		ret;
-	int		idx;
-
-	cmds = NULL;
-	if (input != NULL)
+	if (sig == SIGINT)
 	{
-		ret = split_by_token(input, &cmds, ';');
-		ft_strdel(&input);
-		idx = -1;
-		while (++idx < ret)
-			cmd_manager(cmds[idx], env);
-		ft_splitdel(cmds);
+		ft_putchar('\n');
+		signal(SIGINT, signal_handler);
 	}
 }

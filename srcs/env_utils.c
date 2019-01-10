@@ -1,34 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_manager.c                                    :+:      :+:    :+:   */
+/*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
+/*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/01/08 20:20:05 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:52:29 by wta              ###   ########.fr       */
+/*   Created: 2019/01/10 00:04:39 by wta               #+#    #+#             */
+/*   Updated: 2019/01/10 04:45:40 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/includes/libft.h"
 #include "minishell.h"
 
-#include <stdio.h>
-
-void		input_manager(char *input, char **env)
+char	*get_env_path(char **env)
 {
-	char	**cmds;
-	int		ret;
-	int		idx;
+	int	idx;
 
-	cmds = NULL;
-	if (input != NULL)
+	if (env != NULL)
 	{
-		ret = split_by_token(input, &cmds, ';');
-		ft_strdel(&input);
 		idx = -1;
-		while (++idx < ret)
-			cmd_manager(cmds[idx], env);
-		ft_splitdel(cmds);
+		while (env[++idx] != NULL)
+		{
+			if (ft_strnequ(env[idx], "PATH=", 5) == 1)
+				return (env[idx]);
+		}
 	}
+	return (NULL);
 }

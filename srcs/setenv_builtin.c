@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 04:29:07 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 06:10:06 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 22:26:10 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ int	is_set(char *key, char **env)
 	return (-1);
 }
 
-char	**env_mod(char *buf, char **env)
+char	**env_addkey(char *buf, char **env)
 {
 	char	**new_env;
 	int		env_size;
 	int		idx;
 
 	env_size = split_counter(env);
-	if ((new_env = (char**)ft_memalloc(sizeof(char*) * (env_size + 1))) != NULL)
+	if ((new_env = (char**)ft_memalloc(sizeof(char*) * (env_size + 2))) != NULL)
 	{
 		idx = -1;
 		while (++idx < env_size)
@@ -50,27 +50,43 @@ char	**env_mod(char *buf, char **env)
 	return (new_env);
 }
 
-int	setenv_builtin(char *key, char *value, char **env)
+char	*ft_strtcpy(char *dst, char *src, char token)
+{
+	int	idx;
+
+	idx = -1;
+	while (src[++idx] != '\0')
+	{
+		dst[idx] = src[idx];
+		if (src[idx] == token)
+			break ;
+	}
+	return (dst);
+}
+
+int	setenv_builtin(char *key, char *value, int overwrite, char ***env)
 {
 	char	buf[MAX_PATH_LEN];
-	int		key_size;
+	char	*needle;
 	int		idx;
 
-	if (env != NULL)
+	ft_bzero(buf, MAX_PATH_LEN);
+	ft_strtcpy(buf, key, '=');
+	if ((needle = ft_strchr(key, '=')) == NULL && value != NULL)
+		ft_strcat(buf, "=");
+	else if ((needle == NULL && value == NULL) || buf[0] == '=')
+		return (5);
+	if ((idx = is_set(buf, *env)) >= 0 && overwrite != 0)
 	{
-		ft_bzero(buf, MAX_PATH_LEN);
-		key_size = ft_strlen(key);
-		ft_strcpy(buf, key);
-		buf[key_size] = '=';
-		ft_strcat(buf, value);
-		if ((idx = is_set(key, env)) >= 0)
-		{
-			if ((env[idx] = ft_strdup(buf)) == NULL)
-				return (EXIT);
-		}
-		else if ((env = env_mod(buf, env)) == NULL)
+		(ft_strchr(key, '=') != NULL) ? ft_strcat(buf, needle + 1)
+		: ft_strcat(buf, value);
+		needle = (*env)[idx];
+		if (((*env)[idx] = ft_strdup(buf)) == NULL)
 			return (EXIT);
-		print_env(env);
+		ft_strdel(&needle);
 	}
+	else if ((*env = env_addkey((needle != NULL) ? key
+		: ft_strcat(buf, value), *env)) == NULL)
+		return (EXIT);
 	return (0);
 }

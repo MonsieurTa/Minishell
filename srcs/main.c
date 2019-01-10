@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:42:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 06:17:42 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 21:27:30 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	init_shell(int ac, char **av, char ***env)
 	(void)ac;
 	(void)av;
 	len = split_counter(*env);
-	ft_printf("%d\n", len);
 	if ((new_env = (char**)ft_memalloc(sizeof(char*) * (len + 1))) != NULL)
 	{
 		idx = -1;
@@ -60,7 +59,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		if (get_next_line(0, &input) > 0)
-			input_manager(input, env);
+			input_manager(input, &env);
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/01/10 06:05:21 by wta              ###   ########.fr        #
+#    Updated: 2019/01/10 21:38:52 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #=======================================================================  COLOR#
@@ -25,10 +25,11 @@ OBJDIR		=	objs
 OBJ			=	$(addprefix $(OBJDIR)/,$(SRCS:.c=.o))
 CC			=	gcc
 INC			=	-I $(INCDIR) -I .
-CFLAGS		=	-Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS		=	-Wall -Wextra -Werror
 SRCS		=		\
 cmd_manager.c		\
 echo_builtin.c		\
+env_builtin.c		\
 env_utils.c			\
 error.c				\
 get_input.c			\
@@ -37,7 +38,8 @@ main.c				\
 manager_utils.c		\
 manager_utils2.c	\
 setenv_builtin.c	\
-signal_handler.c
+signal_handler.c	\
+unsetenv_builtin.c
 HEADER		=		\
 minishell.h	
 #======================================================================# RULES #

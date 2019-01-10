@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 20:20:05 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:52:29 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 19:45:54 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 
-void		input_manager(char *input, char **env)
+void		input_manager(char *input, char ***env)
 {
 	char	**cmds;
 	int		ret;

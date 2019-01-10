@@ -6,13 +6,14 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:07:40 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:54:22 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 23:33:10 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h> 
 #include <sys/stat.h> 
 #include "../libft/includes/libft.h"
+#include "../libft/includes/ft_printf.h"
 #include "minishell.h"
 
 int		builtin_id(char *str)

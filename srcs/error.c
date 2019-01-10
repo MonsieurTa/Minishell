@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:08:28 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 05:18:26 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 21:27:00 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	err_handler(int err_id, char *str)
 		ft_printf("-minishell: %s: Permission denied\n", str);
 	if (err_id == INV_ARG)
 		ft_printf("-minishell: %s: Invalid argument\n", str);
-	if (err_id == SETENV_USAGE)
-		ft_printf("-minishell: setenv [Key] [Value]\n", str);
+	if (err_id == SETENV_USG)
+		ft_printf("usage: setenv [[Key=Value] | [Key] [Value]]\n", str);
+	if (err_id == UNSETENV_USG)
+		ft_printf("usage: unsetenv [Key]\n", str);
+	if (err_id == FAILFORK)
+		ft_printf("-minishell: Fork failed\n", str);
+		
 }

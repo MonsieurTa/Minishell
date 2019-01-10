@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:04:39 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:45:40 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/10 23:35:49 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*get_env_path(char **env)
 		while (env[++idx] != NULL)
 		{
 			if (ft_strnequ(env[idx], "PATH=", 5) == 1)
-				return (env[idx]);
+				return (env[idx] + 5);
 		}
 	}
 	return (NULL);

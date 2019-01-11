@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 20:43:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 21:58:23 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 22:11:57 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int		exec_binpath(char **bin, char **env)
 	if (S_ISREG(buf.st_mode) == 1 && access(bin[0], X_OK) == 0)
 	{
 		pid = fork();
+		signal(SIGINT, sigfork);
 		if (pid == 0)
 			execve(bin[0], bin, env);
 		else if (pid < 0)

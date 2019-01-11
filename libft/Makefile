@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2018/12/02 16:58:03 by wta              ###   ########.fr        #
+#    Updated: 2019/01/11 22:12:51 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #=======================================================================  COLOR#
@@ -44,9 +44,8 @@ ft_strjoindel.c	ft_strlcat.c	ft_strlen.c			ft_strmap.c				\
 ft_strmapi.c	ft_strncat.c	ft_strncmp.c		ft_strncpy.c			\
 ft_strnequ.c	ft_strnew.c		ft_strnstr.c		ft_strrchr.c			\
 ft_strsplit.c	ft_strstr.c		ft_strsub.c			ft_strtrim.c			\
-ft_tolower.c	ft_toupper.c	ft_wdcpy.c			ft_word_count.c			\
-ft_word_len.c	get_next_line.c ft_strjoinfree.c	ft_strndup.c			\
-ft_strndupfree.c
+ft_tolower.c	ft_toupper.c	get_next_line.c 	ft_strjoinfree.c		\
+ft_strndup.c	ft_strndupfree.c
 SRCSPRINTF	=																\
 ft_convert.c	ft_convert_c.c	ft_convert_d.c		ft_convert_f.c			\
 ft_convert_hex.c				ft_convert_o.c		ft_convert_p.c			\

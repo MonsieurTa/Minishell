@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:07:40 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 23:33:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 22:07:57 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		builtin_id(char *str)
 		return (4);
 	else if (ft_strequ(str, "env") == 1)
 		return (5);
-	else if (ft_strequ(str, "clear") == 1)
+	else if (ft_strequ(str, "exit") == 1)
 		return (6);
 	return (0);
 }
@@ -46,7 +46,9 @@ int		find_bin(char **env_path, char **bin, char **env)
 		{
 			if (access(path, X_OK) == 0)
 			{
-				if ((pid = fork()) == 0)
+				pid = fork();
+				signal(SIGINT, sigfork);
+				if (pid == 0)
 					execve(path, bin, env);
 				wait(&pid);
 				return (1);

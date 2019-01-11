@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:43:20 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 21:40:08 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 21:28:06 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,33 @@
 # define SETENV_USG		5
 # define UNSETENV_USG	6
 # define FAILFORK		7
+# define NOT_DIR		8
+
+char	**g_env;
 
 void	input_manager(char *input, char ***env);
 void	cmd_manager(char *cmd, char ***env);
 
-int		split_by_token(char *input, char ***cmds, char token);
+int		split_by_token(char *input, char ***cmds, char *tokens);
 int		split_counter(char **split);
 void	ft_splitdel(char **split);
 int		is_path(char *str);
 
 void	exec_bin(char **bin, char **env);
+void	exit_builtin(void);
 int		builtin_id(char *str);
+int		cd_builtin(int ac, char **av, char ***env);
 int		echo_builtin(int ac, char **av, char **env);
 int		env_builtin(int ac, char **arg, char **env);
 int		setenv_builtin(char *key, char *value, int overwrite, char ***env);
 int		unsetenv_builtin(char *key, char ***env);
 
-void	signal_handler(int sig);
+char	*get_hpath(char **env);
+void	manager_expand(char **input, char **env);
+
+void	sighandler(int sig);
+void	sigfork(int sig);
+void	prompt_msg(char **env);
 
 void	err_handler(int err_id, char *str);
 

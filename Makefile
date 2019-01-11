@@ -6,7 +6,7 @@
 #    By: wta <wta@student.42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/07/28 20:09:26 by wta               #+#    #+#              #
-#    Updated: 2019/01/10 21:38:52 by wta              ###   ########.fr        #
+#    Updated: 2019/01/11 07:04:57 by wta              ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 #=======================================================================  COLOR#
@@ -27,6 +27,7 @@ CC			=	gcc
 INC			=	-I $(INCDIR) -I .
 CFLAGS		=	-Wall -Wextra -Werror
 SRCS		=		\
+cd_builtin.c		\
 cmd_manager.c		\
 echo_builtin.c		\
 env_builtin.c		\

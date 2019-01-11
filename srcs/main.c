@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:42:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 21:27:30 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 22:06:47 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,83 @@ void	init_shell(int ac, char **av, char ***env)
 	exit(0);
 }
 
+char	*get_pwd(char **env)
+{
+	int	idx;
+
+	if (env != NULL)
+	{
+		idx = -1;
+		while (env[++idx] != NULL)
+		{
+			if (ft_strnequ("PWD=", env[idx], 4) == 1)
+				return (env[idx] + 4);
+		}
+	}
+	return (NULL);
+}
+
+void	display_cpwd(char *pwd)
+{
+	int	len;
+
+	len = ft_strlen(pwd);
+	while (len >= 0 && pwd[len] != '/')
+		len--;
+	(len != 0) ? ft_printf("%s ", pwd + len + 1) : ft_printf("%s ", pwd);
+}
+
+char	*get_logname(char **env)
+{
+	int	idx;
+
+	if (env != NULL)
+	{
+		idx = -1;
+		while (env[++idx] != NULL)
+		{
+			if (ft_strnequ("LOGNAME=", env[idx], 8) == 1)
+				return (env[idx] + 8);
+		}
+	}
+	return (NULL);
+}
+
+void	prompt_msg(char **env)
+{
+	char	*logname;
+	char	*home;
+	char	*pwd;
+	int		hlen;
+
+	if ((home = get_hpath(env)) != NULL)
+	{
+		hlen = ft_strlen(home);
+		if ((pwd = get_pwd(env)) != NULL)
+		{
+			if (ft_strequ(home, pwd) == 1)
+				ft_printf("~ ");
+			display_cpwd(pwd);
+		}
+	}
+	logname = get_logname(env);
+	ft_printf("%s$ ", (logname != NULL) ? logname : "Minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char	*input;
 
+	signal(SIGINT, sighandler);
 	init_shell(ac, av, &env);
-	signal(SIGINT, signal_handler);
+	g_env = env;
 	input = NULL;
 	while (1)
 	{
+		prompt_msg(env);
 		if (get_next_line(0, &input) > 0)
 			input_manager(input, &env);
 	}
+	ft_splitdel(env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 23:28:59 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 00:14:17 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 21:16:46 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int		split_counter(char **split)
 	return (count);
 }
 
-int		split_by_token(char *input, char ***cmds, char token)
+int		split_by_token(char *input, char ***cmds, char *tokens)
 {
-	*cmds = ft_strsplit(input, token);
+	*cmds = ft_strsplit(input, tokens);
 	return (split_counter(*cmds));
 }
 

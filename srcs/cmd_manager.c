@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 20:43:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 23:38:37 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/11 21:58:23 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void	exec_builtin(char **builtin, int id, char ***env)
 	err_id = 0;
 	if (id == 1)
 		err_id = echo_builtin(ac, builtin, *env);
+	if (id == 2)
+		err_id = cd_builtin(ac, builtin, env);
 	if (id == 3 && (ac == 2 || ac == 3))
 		err_id = setenv_builtin(builtin[1], builtin[2], 1, env);
 	else if (id == 3 && split_counter(builtin) != 3)
@@ -34,16 +36,14 @@ void	exec_builtin(char **builtin, int id, char ***env)
 		err_id = unsetenv_builtin(builtin[1], env);
 	else if (id == 4 && ac != 2)
 		err_id = UNSETENV_USG;
-	if (id == 5)
+	if (id == 5 && ac > 1)
 		err_id = env_builtin(ac, builtin, *env);
-	/*
-	if (id == 2)
-		err_id = cd_builtin(ac, builtin);
+	else if (id == 5 && ac == 1)
+		print_env(*env);
 	if (id == 6)
-		err_id = clear_builtin(ac, builtin);*/
+		exit_builtin();
 	if (err_id != 0)
 		err_handler(err_id, builtin[0]);
-//	print_env(env);
 }
 
 int		exec_binpath(char **bin, char **env)
@@ -55,14 +55,17 @@ int		exec_binpath(char **bin, char **env)
 		return (1);
 	if (S_ISREG(buf.st_mode) == 1 && access(bin[0], X_OK) == 0)
 	{
-		if ((pid = fork()) == 0)
+		pid = fork();
+		if (pid == 0)
 			execve(bin[0], bin, env);
+		else if (pid < 0)
+			return (FAILFORK);
 		wait(&pid);
 	}
 	else if (S_ISDIR(buf.st_mode) == 1)
-		return (2);
+		return (IS_DIRECTORY);
 	else if (access(bin[0], X_OK) != 0)
-		return (3);
+		return (NO_RIGHT);
 	return (0);
 }
 
@@ -70,16 +73,14 @@ int		exec_envpath(char **bin, char **env)
 {
 	char	**env_path;
 	char	*path;
-	int		ret;
 
 	if ((path = get_env_path(env)) == NULL || path[0] == '\0')
-		ret = split_by_token("./", &env_path, ':');
+		split_by_token("./", &env_path, ":");
 	else
-		ret = split_by_token(path, &env_path, ':');
-	if (ret > 0 && find_bin(env_path, bin, env) == 0)
+		split_by_token(path, &env_path, ":");
+	if (find_bin(env_path, bin, env) == 0)
 		ft_printf("-minishell: %s: command not found\n", bin[0]);
-	else if (ret != 0)
-		ft_splitdel(env_path);
+	ft_splitdel(env_path);
 	return (0);
 }
 
@@ -87,6 +88,7 @@ void	exec_bin(char **bin, char **env)
 {
 	int	err_id;
 
+	print_env(bin);
 	err_id = (is_path(bin[0])) ? exec_binpath(bin, env) :
 		exec_envpath(bin, env);
 	if (err_id != 0)
@@ -96,12 +98,16 @@ void	exec_bin(char **bin, char **env)
 void	cmd_manager(char *cmd, char ***env)
 {
 	char	**split;
+	int		idx;
 	int		id;
 
-	if (split_by_token(cmd, &split, ' ') > 0)
+	if (split_by_token(cmd, &split, " \t") > 0)
 	{
+		idx = -1;
+		while (split[++idx] != NULL)
+			manager_expand(&split[idx], *env);
 		id = builtin_id(split[0]);
 		(id > 0) ? exec_builtin(split, id, env) : exec_bin(split, *env);
-		ft_splitdel(split);
 	}
+	ft_splitdel(split);
 }

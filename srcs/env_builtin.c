@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 03:22:49 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 21:45:58 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:17:27 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ char	**envcpy(char **env)
 	return (NULL);
 }
 
-int	env_exec(char **av, char **env)
+int		env_exec(char **av, char **env)
 {
 	exec_bin(av, env);
 	ft_splitdel(env);
 	return (0);
 }
 
-int	env_builtin(int ac, char **av, char **env)
+int		env_builtin(int ac, char **av, char **env)
 {
 	char	*needle;
 	char	**cpy;

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/09 14:40:44 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 21:15:56 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:21:58 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static int	cnt_wd(char *str, int len)
 
 static char	*dup_n_wd(char *buf, int len, int n)
 {
-	int	nwd;;
+	int	nwd;
 	int	wd;
 	int	i;
 

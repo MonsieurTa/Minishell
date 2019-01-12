@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 02:06:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 04:51:44 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:19:07 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 #include "../libft/includes/ft_printf.h"
 #include "minishell.h"
 
-int		echo_builtin(int ac, char **av, char **env)
+int		echo_builtin(int ac, char **av)
 {
-	(void)env;
 	int	idx;
 
 	if (ac > 1)

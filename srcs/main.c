@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:42:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 22:06:47 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:21:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	print_env(char **env)
 {
 	int	idx;
 
-	if (env !=  NULL)
+	if (env != NULL)
 	{
 		idx = -1;
 		while (env[++idx] != NULL)
@@ -49,48 +49,6 @@ void	init_shell(int ac, char **av, char ***env)
 	exit(0);
 }
 
-char	*get_pwd(char **env)
-{
-	int	idx;
-
-	if (env != NULL)
-	{
-		idx = -1;
-		while (env[++idx] != NULL)
-		{
-			if (ft_strnequ("PWD=", env[idx], 4) == 1)
-				return (env[idx] + 4);
-		}
-	}
-	return (NULL);
-}
-
-void	display_cpwd(char *pwd)
-{
-	int	len;
-
-	len = ft_strlen(pwd);
-	while (len >= 0 && pwd[len] != '/')
-		len--;
-	(len != 0) ? ft_printf("%s ", pwd + len + 1) : ft_printf("%s ", pwd);
-}
-
-char	*get_logname(char **env)
-{
-	int	idx;
-
-	if (env != NULL)
-	{
-		idx = -1;
-		while (env[++idx] != NULL)
-		{
-			if (ft_strnequ("LOGNAME=", env[idx], 8) == 1)
-				return (env[idx] + 8);
-		}
-	}
-	return (NULL);
-}
-
 void	prompt_msg(char **env)
 {
 	char	*logname;
@@ -109,20 +67,20 @@ void	prompt_msg(char **env)
 		}
 	}
 	logname = get_logname(env);
-	ft_printf("%s$ ", (logname != NULL) ? logname : "Minishell");
+	ft_printf("%s$ ", (logname != NULL) ? logname : "-minishell");
 }
 
-int	main(int ac, char **av, char **env)
+int		main(int ac, char **av, char **env)
 {
 	char	*input;
 
-	signal(SIGINT, sighandler);
-	init_shell(ac, av, &env);
 	g_env = env;
+	init_shell(ac, av, &env);
 	input = NULL;
 	while (1)
 	{
 		prompt_msg(env);
+		signal(SIGINT, sighandler);
 		if (get_next_line(0, &input) > 0)
 			input_manager(input, &env);
 	}

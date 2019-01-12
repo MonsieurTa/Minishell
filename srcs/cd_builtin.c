@@ -6,12 +6,12 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 23:47:52 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 20:17:40 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:18:37 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h> 
-#include <sys/stat.h> 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "../libft/includes/libft.h"
 #include "../libft/includes/ft_printf.h"
 #include "minishell.h"
@@ -73,7 +73,7 @@ char	*get_hpath(char **env)
 	return (NULL);
 }
 
-int	cd_builtin(int ac, char **av, char ***env)
+int		cd_builtin(int ac, char **av, char ***env)
 {
 	char	*path;
 	int		err_id;

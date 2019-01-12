@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 04:29:07 by wta               #+#    #+#             */
-/*   Updated: 2019/01/10 22:26:10 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:16:05 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../libft/includes/libft.h"
 #include "minishell.h"
 
-int	is_set(char *key, char **env)
+int		is_set(char *key, char **env)
 {
 	int	key_size;
 	int	idx;
@@ -64,7 +64,7 @@ char	*ft_strtcpy(char *dst, char *src, char token)
 	return (dst);
 }
 
-int	setenv_builtin(char *key, char *value, int overwrite, char ***env)
+int		setenv_builtin(char *key, char *value, int overwrite, char ***env)
 {
 	char	buf[MAX_PATH_LEN];
 	char	*needle;

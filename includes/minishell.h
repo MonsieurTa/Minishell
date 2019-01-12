@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:43:20 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 21:28:06 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:20:52 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	exec_bin(char **bin, char **env);
 void	exit_builtin(void);
 int		builtin_id(char *str);
 int		cd_builtin(int ac, char **av, char ***env);
-int		echo_builtin(int ac, char **av, char **env);
+int		echo_builtin(int ac, char **av);
 int		env_builtin(int ac, char **arg, char **env);
 int		setenv_builtin(char *key, char *value, int overwrite, char ***env);
 int		unsetenv_builtin(char *key, char ***env);
@@ -49,6 +49,10 @@ void	manager_expand(char **input, char **env);
 void	sighandler(int sig);
 void	sigfork(int sig);
 void	prompt_msg(char **env);
+
+char	*get_pwd(char **env);
+void	display_cpwd(char *pwd);
+char	*get_logname(char **env);
 
 void	err_handler(int err_id, char *str);
 

@@ -6,12 +6,12 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 20:43:35 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 22:11:57 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:19:37 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h> 
-#include <sys/stat.h> 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include "../libft/includes/libft.h"
 #include "../libft/includes/ft_printf.h"
@@ -25,7 +25,7 @@ void	exec_builtin(char **builtin, int id, char ***env)
 	ac = split_counter(builtin);
 	err_id = 0;
 	if (id == 1)
-		err_id = echo_builtin(ac, builtin, *env);
+		err_id = echo_builtin(ac, builtin);
 	if (id == 2)
 		err_id = cd_builtin(ac, builtin, env);
 	if (id == 3 && (ac == 2 || ac == 3))
@@ -89,7 +89,6 @@ void	exec_bin(char **bin, char **env)
 {
 	int	err_id;
 
-	print_env(bin);
 	err_id = (is_path(bin[0])) ? exec_binpath(bin, env) :
 		exec_envpath(bin, env);
 	if (err_id != 0)

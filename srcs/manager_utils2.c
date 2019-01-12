@@ -6,12 +6,12 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:07:40 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 22:07:57 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:20:26 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h> 
-#include <sys/stat.h> 
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "../libft/includes/libft.h"
 #include "../libft/includes/ft_printf.h"
 #include "minishell.h"
@@ -57,4 +57,46 @@ int		find_bin(char **env_path, char **bin, char **env)
 		env_path++;
 	}
 	return (0);
+}
+
+char	*get_pwd(char **env)
+{
+	int	idx;
+
+	if (env != NULL)
+	{
+		idx = -1;
+		while (env[++idx] != NULL)
+		{
+			if (ft_strnequ("PWD=", env[idx], 4) == 1)
+				return (env[idx] + 4);
+		}
+	}
+	return (NULL);
+}
+
+void	display_cpwd(char *pwd)
+{
+	int	len;
+
+	len = ft_strlen(pwd);
+	while (len >= 0 && pwd[len] != '/')
+		len--;
+	(len != 0) ? ft_printf("%s ", pwd + len + 1) : ft_printf("%s ", pwd);
+}
+
+char	*get_logname(char **env)
+{
+	int	idx;
+
+	if (env != NULL)
+	{
+		idx = -1;
+		while (env[++idx] != NULL)
+		{
+			if (ft_strnequ("LOGNAME=", env[idx], 8) == 1)
+				return (env[idx] + 8);
+		}
+	}
+	return (NULL);
 }

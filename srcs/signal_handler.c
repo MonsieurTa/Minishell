@@ -6,7 +6,7 @@
 /*   By: wta <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 00:06:17 by wta               #+#    #+#             */
-/*   Updated: 2019/01/11 22:08:54 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/12 01:08:45 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@
 
 void	exit_builtin(void)
 {
-	ft_splitdel(g_env);
 	exit(0);
 }
 
@@ -35,6 +34,6 @@ void	sigfork(int sig)
 	if (sig == SIGINT)
 	{
 		ft_printf("\n");
-		signal(SIGINT, sighandler);
+		signal(SIGINT, sigfork);
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: wta <wta@student.41.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/08 19:42:27 by wta               #+#    #+#             */
-/*   Updated: 2019/01/12 01:21:28 by wta              ###   ########.fr       */
+/*   Updated: 2019/01/19 11:31:28 by wta              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,15 +73,18 @@ void	prompt_msg(char **env)
 int		main(int ac, char **av, char **env)
 {
 	char	*input;
+	int		ret;
 
 	g_env = env;
 	init_shell(ac, av, &env);
 	input = NULL;
-	while (1)
+	ret = 1;
+	while (ret == 1)
 	{
-		prompt_msg(env);
+		if (isatty(0) == 1)
+			prompt_msg(env);
 		signal(SIGINT, sighandler);
-		if (get_next_line(0, &input) > 0)
+		if ((ret = get_next_line(0, &input)) > 0)
 			input_manager(input, &env);
 	}
 	ft_splitdel(env);
